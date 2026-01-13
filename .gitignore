@@ -1,0 +1,8 @@
+# Arduino build artifacts
+*.elf
+*.hex
+
+# Backup/temp files
+*.bak
+*.tmp
+*.swp
