@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "sharedState.h"
 #include "dht11Sensor.h"
+#include "mister.h"
 
 // Constant and variable definition
 unsigned long lastReading = 0;
@@ -12,6 +13,7 @@ SharedState state;
 void setup() {
   Serial.begin(115200);
   dht11Begin();
+  misterInit();
 }
 
 void loop() {
