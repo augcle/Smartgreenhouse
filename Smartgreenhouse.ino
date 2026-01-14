@@ -14,6 +14,7 @@ void setup() {
   Serial.begin(115200);
   dht11Begin();
   misterInit();
+  lightInit();
 }
 
 void loop() {
@@ -32,5 +33,14 @@ void loop() {
     } else {
       Serial.println("DHT read failed");
   }
+  }
+  lightUpdate(state);
+  static uint32_t lastPrint = 0;
+  if (millis() - lastPrint > 1000) {
+    lastPrint = millis();
+    Serial.print("hoursToday=");
+    Serial.print(state.lightHoursToday, 2);
+    Serial.print(" lampOn=");
+    Serial.println(state.lampOn ? "true" : "false");
   }
 }
