@@ -35,8 +35,8 @@ void loop() {
     Serial.print(state.tempC, 1);
     Serial.print("  hum=");
     Serial.print(state.humidityPct, 1);
-    Serial.print("  light=");
-    Serial.print(state.lightHoursToday, 2);
+    Serial.print("  lighthours=");
+    Serial.print(state.lightHoursToday, 4);
     Serial.print("  lampOn=");
     Serial.print(state.lampOn ? "true" : "false");
     Serial.print("  heaterOn=");

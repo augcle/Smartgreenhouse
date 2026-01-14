@@ -5,7 +5,7 @@
 static const uint8_t LDR_PIN = A0;
 
 // Plant lamp indicator LED pin (NodeMCU/Wemos style pin name)
-static const uint8_t LEDPIN  = D2;
+static const uint8_t LEDPIN  = D3;
 
 // --- Calibration constants ---
 // Threshold used to decide "dark" vs "bright".
