@@ -1,0 +1,21 @@
+#pragma once
+#include <Arduino.h>
+
+/**
+ * Shared system state
+ * Sensor modules write to their own variables
+ * Other modules can read from it
+*/ 
+
+struct SharedState{
+    // DHT11: Temperature and humidity
+    float tempC;
+    float humPct;
+
+    bool hasDht;
+    
+    // Light sensor
+    float light;
+    bool hasLight;
+
+};
