@@ -1,12 +1,14 @@
 #include <Arduino.h>
 #include "sharedState.h"
 #include "dht11Sensor.h"
+#include "mister.h"
 
 SharedState state;
 
 void setup() {
   Serial.begin(115200);
   dht11Begin();
+  misterInit();
 }
 
 void loop() {
