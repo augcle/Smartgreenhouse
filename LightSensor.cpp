@@ -103,8 +103,6 @@ void lightUpdate(SharedState &state) {
     hoursToday = clampf(hoursToday, 0.0f, 24.0f);
   }
 
-  // Export only the required outputs to the shared system state
-  // (1 float + 1 bool)
   state.lightHoursToday = hoursToday;       // "hours of light received today"
   state.lampOn = shouldLampOn;     // lamp LED ON/OFF
 }
