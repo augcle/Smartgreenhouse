@@ -15,6 +15,6 @@ struct SharedState{
     
     // Light sensor
     float light = NAN;
-    bool hasLight = false;
+    bool lampOn = false;
 
 };
