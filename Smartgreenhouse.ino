@@ -1,14 +1,25 @@
 #include <Arduino.h>
-
-#include "dht11Sensor.h"
 #include "sharedState.h"
+#include "dht11Sensor.h"
+
+SharedState state;
 
 void setup() {
   Serial.begin(115200);
-  initDHT();
+  dht11Begin();
 }
 
 void loop() {
-  readDHT();
-  delay(2000);
+  dht11Read(state);
+
+  if (state.hasDht) {
+    Serial.print("Temp: ");
+    Serial.print(state.tempC);
+    Serial.print("  Hum: ");
+    Serial.println(state.humidityPct);
+  } else {
+    Serial.println("DHT read failed");
+  }
+
+  delay(2000); // OK for now
 }
