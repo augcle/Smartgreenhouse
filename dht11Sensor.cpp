@@ -1,27 +1,29 @@
 #include "dht11Sensor.h"
-#include <DHT.h>
+#include <DHT.h> // from the DHT sensor library by Adafruit (verbatim)
 
-#define DHTPIN 2       // adjust for your ESP8266
-#define DHTTYPE DHT11
+#define DHTPIN D7
+#define DHTTYPE DHT11 // library includes many types, so definition is necessary
+static DHT dht(DHTPIN, DHTTYPE); 
 
-static DHT dht(DHTPIN, DHTTYPE);
 
-bool dht11Begin() {
-  dht.begin();
-  return true;
+void dht11Begin() {
+  dht.begin(); // start the sensor
 }
 
-bool dht11Read(SharedState &state) {
-  float t = dht.readTemperature();
+void dht11Read(SharedState &state) {
   float h = dht.readHumidity();
+  float t = dht.readTemperature();
 
-  if (isnan(t) || isnan(h)) {
-    state.hasDht = false;
-    return false;
+  // Error case. DHT uses NaN to signal failure
+  if (isnan(h) || isnan(t)) { 
+    state.hasDht = false; // says the reading failed
+    state.tempC = NAN;
+    state.humidityPct = NAN;
+    return;
   }
 
-  state.tempC = t;
+  // Success case
   state.humidityPct = h;
+  state.tempC = t;
   state.hasDht = true;
-  return true;
 }

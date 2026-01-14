@@ -9,10 +9,9 @@
 
 struct SharedState{
     // DHT11: Temperature and humidity
-    float tempC;
-    float humPct;
-
-    bool hasDht;
+    float tempC = NAN;
+    float humidityPct = NAN;
+    bool hasDht = false;
     
     // Light sensor
     float light;

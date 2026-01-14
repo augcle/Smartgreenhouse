@@ -2,6 +2,11 @@
 #include "sharedState.h"
 #include "dht11Sensor.h"
 
+// Constant and variable definition
+unsigned long lastReading = 0;
+const unsigned long READING_PERIOD = 3000; 
+
+// Initialize state machine ONLY ONCE and ONLY HERE
 SharedState state;
 
 void setup() {
@@ -10,16 +15,20 @@ void setup() {
 }
 
 void loop() {
-  dht11Read(state);
-
-  if (state.hasDht) {
-    Serial.print("Temp: ");
-    Serial.print(state.tempC);
-    Serial.print("  Hum: ");
-    Serial.println(state.humidityPct);
-  } else {
-    Serial.println("DHT read failed");
+  unsigned long now = millis();
+  if (now - lastReading >= READING_PERIOD){
+    lastReading = now;
+    // Important dht11 reading
+    dht11Read(state);
+    
+    // Optional dht print statements
+    if (state.hasDht) {
+      Serial.print("Temp: ");
+      Serial.print(state.tempC);
+      Serial.print("  Hum: ");
+      Serial.println(state.humidityPct);
+    } else {
+      Serial.println("DHT read failed");
   }
-
-  delay(2000); // OK for now
+  }
 }
