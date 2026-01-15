@@ -16,6 +16,11 @@ struct SharedState {
   float lightHoursToday = NAN;
   bool  lampOn = false;
 
-  // Heater module (heat lamp indicator)
-  bool  heaterOn = false;
+  // Actuator states
+  bool heaterOn = false;
+  bool misterOn = false;
+
+  // Targets
+  float targetTempC = 27.0f;
+  float targetHumidityPct = 65.0f;
 };

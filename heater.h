@@ -2,4 +2,4 @@
 #include "sharedState.h"
 
 void heaterBegin();
-void heaterUpdate(SharedState &state);
+void heaterSet(SharedState &state, bool on);
