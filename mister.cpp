@@ -1,3 +1,8 @@
+/**
+ * @file mister.cpp
+ * @brief Mister output implementation.
+ */
+
 #include "mister.h"
 
 #define MISTERPIN D1

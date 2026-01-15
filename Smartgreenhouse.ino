@@ -1,3 +1,12 @@
+/**
+ * @file Smartgreenhouse.ino
+ * @brief Main application wiring together sensor/actuator modules.
+ *
+ * Flow:
+ *  - setup(): init modules + set targets
+ *  - loop(): read sensors -> controller -> actuate
+ */
+
 #include <Arduino.h>
 #include "sharedState.h"
 #include "dht11Sensor.h"

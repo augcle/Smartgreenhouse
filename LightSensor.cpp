@@ -1,4 +1,9 @@
-#include "Lightsensor.h"
+/**
+ * @file LightSensor.cpp
+ * @brief Light sensor (LDR) logic + lamp + daily light counter.
+ */
+
+#include "LightSensor.h"
 
 // Hardware pins (matches your working test setup)
 // LDR voltage divider output is connected to A0 (ESP ADC: 0..1023)

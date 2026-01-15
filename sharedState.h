@@ -2,25 +2,26 @@
 #include <Arduino.h>
 
 /**
- * Shared system state
- * Sensor modules write to their own variables
- * Other modules can read from it
+ * @file sharedState.h
+ * @brief Shared state container for sensors + actuators.
+ *
+ * Modules write/read to/from this struct to coordinate behavior.
  */
 struct SharedState {
-  // DHT11: Temperature and humidity
-  float tempC = NAN;
-  float humidityPct = NAN;
-  bool  hasDht = false;
+  // --- DHT11: Temperature and humidity ---
+  float tempC = NAN;          ///< Latest temperature in °C (NAN if invalid)
+  float humidityPct = NAN;    ///< Latest humidity in % (NAN if invalid)
+  bool  hasDht = false;       ///< True if last DHT read succeeded
 
-  // Light module (hours of light received today + lamp state)
-  float lightHoursToday = NAN;
-  bool  lampOn = false;
+  // --- Light module ---
+  float lightHoursToday = NAN; ///< Accumulated hours of effective light today
+  bool  lampOn = false;        ///< True when lamp LED output is ON
 
-  // Actuator states
-  bool heaterOn = false;
-  bool misterOn = false;
+  // --- Actuator states ---
+  bool heaterOn = false;      ///< True when heater output is ON
+  bool misterOn = false;      ///< True when mister output is ON
 
-  // Targets
-  float targetTempC = 27.0f;
-  float targetHumidityPct = 65.0f;
+  // --- Targets (set by main / controller) ---
+  float targetTempC = 27.0f;        ///< Desired temperature (°C)
+  float targetHumidityPct = 65.0f;  ///< Desired humidity (%)
 };

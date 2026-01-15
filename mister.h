@@ -1,10 +1,21 @@
 #pragma once
-#ifndef MISTER_H
-#define MISTER_H
+#include <Arduino.h>
 
-#include <Arduino.h> // Might be unnecessary since it is called in the main file
+/**
+ * @file mister.h
+ * @brief Mister output module (on/off).
+ */
 
-void misterInit(); /// Call the function with no arguments. It initializes the pin to be used for the mister
-void misterState(bool command); /// Call the function with a simple 'true' or 'false' command to turn the mister on or off
+/**
+ * @brief Initialize the mister output pin.
+ *
+ * Call once in setup().
+ */
+void misterInit();
 
-#endif
+/**
+ * @brief Turn mister output ON/OFF.
+ *
+ * @param command True = ON, False = OFF.
+ */
+void misterState(bool command);
