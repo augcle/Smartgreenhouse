@@ -1,0 +1,62 @@
+\doxysection{dht11\+Sensor.\+h File Reference}
+\hypertarget{dht11_sensor_8h}{}\label{dht11_sensor_8h}\index{dht11Sensor.h@{dht11Sensor.h}}
+
+
+DHT11 sensor module:\+ init + read into \doxylink{struct_shared_state}{Shared\+State}.  
+
+
+{\ttfamily \+\#include "{}shared\+State.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{dht11_sensor_8h_a93ed6af9983f237f27c1ee65db91a573}{dht11\+Begin}} ()
+\begin{DoxyCompactList}\small\item\em Initialize the DHT11 hardware/\+library. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{dht11_sensor_8h_a46f4e6db0c0a5761ed752910c9701615}{dht11\+Read}} (\doxymbox{\hyperlink{struct_shared_state}{Shared\+State}} \&state)
+\begin{DoxyCompactList}\small\item\em Read temperature + humidity and write results into \doxylink{struct_shared_state}{Shared\+State}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+DHT11 sensor module:\+ init + read into \doxylink{struct_shared_state}{Shared\+State}. 
+
+
+
+\label{doc-func-members}
+\Hypertarget{dht11_sensor_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{dht11_sensor_8h_a93ed6af9983f237f27c1ee65db91a573}\index{dht11Sensor.h@{dht11Sensor.h}!dht11Begin@{dht11Begin}}
+\index{dht11Begin@{dht11Begin}!dht11Sensor.h@{dht11Sensor.h}}
+\doxysubsubsection{\texorpdfstring{dht11Begin()}{dht11Begin()}}
+{\footnotesize\ttfamily \label{dht11_sensor_8h_a93ed6af9983f237f27c1ee65db91a573} 
+void dht11\+Begin (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Initialize the DHT11 hardware/\+library. 
+
+Call once in setup(). \Hypertarget{dht11_sensor_8h_a46f4e6db0c0a5761ed752910c9701615}\index{dht11Sensor.h@{dht11Sensor.h}!dht11Read@{dht11Read}}
+\index{dht11Read@{dht11Read}!dht11Sensor.h@{dht11Sensor.h}}
+\doxysubsubsection{\texorpdfstring{dht11Read()}{dht11Read()}}
+{\footnotesize\ttfamily \label{dht11_sensor_8h_a46f4e6db0c0a5761ed752910c9701615} 
+void dht11\+Read (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_shared_state}{Shared\+State}} \&}]{state}{}\end{DoxyParamCaption})}
+
+
+
+Read temperature + humidity and write results into \doxylink{struct_shared_state}{Shared\+State}. 
+
+On success:\+
+\begin{DoxyItemize}
+\item state.\+tempC, state.\+humidity\+Pct updated
+\item state.\+has\+Dht = true
+\end{DoxyItemize}
+
+On failure:\+
+\begin{DoxyItemize}
+\item temp\+C/\+humidity\+Pct set to NAN
+\item state.\+has\+Dht = false
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \doxylink{struct_shared_state}{Shared\+State} to update. \\
+\hline
+\end{DoxyParams}

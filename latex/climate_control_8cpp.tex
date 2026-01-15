@@ -1,0 +1,71 @@
+\doxysection{climate\+Control.\+cpp File Reference}
+\hypertarget{climate_control_8cpp}{}\label{climate_control_8cpp}\index{climateControl.cpp@{climateControl.cpp}}
+
+
+Climate controller implementation (heater + mister).  
+
+
+{\ttfamily \+\#include $<$Arduino.\+h$>$}\newline
+{\ttfamily \+\#include "{}climate\+Control.\+h"{}}\newline
+{\ttfamily \+\#include "{}heater.\+h"{}}\newline
+{\ttfamily \+\#include "{}mister.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{climate_control_8cpp_a8fb22fdc7cb1d7983b8cbcd8ca7bd6c8}{climate\+Control\+Begin}} ()
+\begin{DoxyCompactList}\small\item\em Initialize controller timers/\+state. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{climate_control_8cpp_a53e733845c73c50290f9cd011ffbd734}{climate\+Control\+Update}} (\doxymbox{\hyperlink{struct_shared_state}{Shared\+State}} \&state)
+\begin{DoxyCompactList}\small\item\em Update climate control (heater + mister) based on sensor readings and targets. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Climate controller implementation (heater + mister). 
+
+
+
+\label{doc-func-members}
+\Hypertarget{climate_control_8cpp_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{climate_control_8cpp_a8fb22fdc7cb1d7983b8cbcd8ca7bd6c8}\index{climateControl.cpp@{climateControl.cpp}!climateControlBegin@{climateControlBegin}}
+\index{climateControlBegin@{climateControlBegin}!climateControl.cpp@{climateControl.cpp}}
+\doxysubsubsection{\texorpdfstring{climateControlBegin()}{climateControlBegin()}}
+{\footnotesize\ttfamily \label{climate_control_8cpp_a8fb22fdc7cb1d7983b8cbcd8ca7bd6c8} 
+void climate\+Control\+Begin (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Initialize controller timers/\+state. 
+
+Call once in setup(). This does not change any outputs by itself. \Hypertarget{climate_control_8cpp_a53e733845c73c50290f9cd011ffbd734}\index{climateControl.cpp@{climateControl.cpp}!climateControlUpdate@{climateControlUpdate}}
+\index{climateControlUpdate@{climateControlUpdate}!climateControl.cpp@{climateControl.cpp}}
+\doxysubsubsection{\texorpdfstring{climateControlUpdate()}{climateControlUpdate()}}
+{\footnotesize\ttfamily \label{climate_control_8cpp_a53e733845c73c50290f9cd011ffbd734} 
+void climate\+Control\+Update (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_shared_state}{Shared\+State}} \&}]{state}{}\end{DoxyParamCaption})}
+
+
+
+Update climate control (heater + mister) based on sensor readings and targets. 
+
+Inputs (read from {\ttfamily state}):\+
+\begin{DoxyItemize}
+\item state.\+has\+Dht, state.\+tempC, state.\+humidity\+Pct
+\item state.\+target\+TempC, state.\+target\+Humidity\+Pct
+\item state.\+heater\+On, state.\+mister\+On (used for hysteresis decisions)
+\end{DoxyItemize}
+
+Outputs (written to {\ttfamily state} and hardware):\+
+\begin{DoxyItemize}
+\item Heater output via heater\+Set(state, on) (also updates state.\+heater\+On)
+\item Mister output via mister\+State(on) and state.\+mister\+On
+\end{DoxyItemize}
+
+Fail-\/safe:\+
+\begin{DoxyItemize}
+\item If state.\+has\+Dht is false, heater and mister are turned OFF.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & Shared state containing latest sensor values, setpoints, and actuator states. \\
+\hline
+\end{DoxyParams}

@@ -1,0 +1,60 @@
+\doxysection{mister.\+h File Reference}
+\hypertarget{mister_8h}{}\label{mister_8h}\index{mister.h@{mister.h}}
+
+
+Mister output module (on/\+off).  
+
+
+{\ttfamily \+\#include $<$Arduino.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{mister_8h_a89f060462deccd1db72698f79b133209}{mister\+Init}} ()
+\begin{DoxyCompactList}\small\item\em Initialize the mister output pin. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{mister_8h_adbb59d6d780d7f1a78447a6294747832}{mister\+State}} (bool command)
+\begin{DoxyCompactList}\small\item\em Turn mister output ON/\+\+OFF. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Mister output module (on/\+off). 
+
+
+
+\label{doc-func-members}
+\Hypertarget{mister_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{mister_8h_a89f060462deccd1db72698f79b133209}\index{mister.h@{mister.h}!misterInit@{misterInit}}
+\index{misterInit@{misterInit}!mister.h@{mister.h}}
+\doxysubsubsection{\texorpdfstring{misterInit()}{misterInit()}}
+{\footnotesize\ttfamily \label{mister_8h_a89f060462deccd1db72698f79b133209} 
+void mister\+Init (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Initialize the mister output pin. 
+
+Call once in setup().
+
+Intializing the pin to be used by the mister. Change pin in the define MISTERPIN. \Hypertarget{mister_8h_adbb59d6d780d7f1a78447a6294747832}\index{mister.h@{mister.h}!misterState@{misterState}}
+\index{misterState@{misterState}!mister.h@{mister.h}}
+\doxysubsubsection{\texorpdfstring{misterState()}{misterState()}}
+{\footnotesize\ttfamily \label{mister_8h_adbb59d6d780d7f1a78447a6294747832} 
+void mister\+State (\begin{DoxyParamCaption}\item[{bool}]{command}{}\end{DoxyParamCaption})}
+
+
+
+Turn mister output ON/\+\+OFF. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & True = ON, False = OFF.\\
+\hline
+\end{DoxyParams}
+Turns the mister on or off. Handles unknown states by turning the mister off. ~\newline
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & can be true or false, to turn on or off the mister. \\
+\hline
+\end{DoxyParams}

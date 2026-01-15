@@ -1,0 +1,59 @@
+\doxysection{Light\+Sensor.\+h File Reference}
+\hypertarget{_light_sensor_8h}{}\label{_light_sensor_8h}\index{LightSensor.h@{LightSensor.h}}
+
+
+Light sensor module (LDR) + lamp control + daily light counter.  
+
+
+{\ttfamily \+\#include $<$Arduino.\+h$>$}\newline
+{\ttfamily \+\#include "{}shared\+State.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{_light_sensor_8h_a37bc85e65dd8a10e2bc2c2df2c1ca05f}{light\+Init}} ()
+\begin{DoxyCompactList}\small\item\em Initialize light sensor module (pins + timing). \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{_light_sensor_8h_a765163f77ca5e9d95530929c81f9b9e6}{light\+Update}} (\doxymbox{\hyperlink{struct_shared_state}{Shared\+State}} \&state)
+\begin{DoxyCompactList}\small\item\em Update light logic and write results to \doxylink{struct_shared_state}{Shared\+State}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Light sensor module (LDR) + lamp control + daily light counter. 
+
+
+
+\label{doc-func-members}
+\Hypertarget{_light_sensor_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{_light_sensor_8h_a37bc85e65dd8a10e2bc2c2df2c1ca05f}\index{LightSensor.h@{LightSensor.h}!lightInit@{lightInit}}
+\index{lightInit@{lightInit}!LightSensor.h@{LightSensor.h}}
+\doxysubsubsection{\texorpdfstring{lightInit()}{lightInit()}}
+{\footnotesize\ttfamily \label{_light_sensor_8h_a37bc85e65dd8a10e2bc2c2df2c1ca05f} 
+void light\+Init (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Initialize light sensor module (pins + timing). 
+
+Call once in setup(). \Hypertarget{_light_sensor_8h_a765163f77ca5e9d95530929c81f9b9e6}\index{LightSensor.h@{LightSensor.h}!lightUpdate@{lightUpdate}}
+\index{lightUpdate@{lightUpdate}!LightSensor.h@{LightSensor.h}}
+\doxysubsubsection{\texorpdfstring{lightUpdate()}{lightUpdate()}}
+{\footnotesize\ttfamily \label{_light_sensor_8h_a765163f77ca5e9d95530929c81f9b9e6} 
+void light\+Update (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_shared_state}{Shared\+State}} \&}]{state}{}\end{DoxyParamCaption})}
+
+
+
+Update light logic and write results to \doxylink{struct_shared_state}{Shared\+State}. 
+
+Writes:\+
+\begin{DoxyItemize}
+\item state.\+light\+Hours\+Today
+\item state.\+lamp\+On
+\end{DoxyItemize}
+
+Call repeatedly in loop().
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \doxylink{struct_shared_state}{Shared\+State} to update. \\
+\hline
+\end{DoxyParams}

@@ -1,0 +1,78 @@
+\doxysection{climate\+Control.\+h File Reference}
+\hypertarget{climate_control_8h}{}\label{climate_control_8h}\index{climateControl.h@{climateControl.h}}
+
+
+Climate controller:\+ applies control logic (heater + mister) from \doxylink{struct_shared_state}{Shared\+State} sensor values/\+targets.  
+
+
+{\ttfamily \+\#include "{}shared\+State.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{climate_control_8h_a8fb22fdc7cb1d7983b8cbcd8ca7bd6c8}{climate\+Control\+Begin}} ()
+\begin{DoxyCompactList}\small\item\em Initialize controller timers/\+state. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{climate_control_8h_a53e733845c73c50290f9cd011ffbd734}{climate\+Control\+Update}} (\doxymbox{\hyperlink{struct_shared_state}{Shared\+State}} \&state)
+\begin{DoxyCompactList}\small\item\em Update climate control (heater + mister) based on sensor readings and targets. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Climate controller:\+ applies control logic (heater + mister) from \doxylink{struct_shared_state}{Shared\+State} sensor values/\+targets. 
+
+This module implements:\+
+\begin{DoxyItemize}
+\item Temperature control using hysteresis (prevents rapid toggling).
+\item Humidity control using hysteresis + safety timers (max ON time + minimum OFF backoff).
+\end{DoxyItemize}
+
+Typical use:\+
+\begin{DoxyItemize}
+\item call \doxylink{climate_control_8h_a8fb22fdc7cb1d7983b8cbcd8ca7bd6c8}{climate\+Control\+Begin()} once in setup()
+\item call climate\+Control\+Update(state) repeatedly in loop() 
+\end{DoxyItemize}
+
+\label{doc-func-members}
+\Hypertarget{climate_control_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{climate_control_8h_a8fb22fdc7cb1d7983b8cbcd8ca7bd6c8}\index{climateControl.h@{climateControl.h}!climateControlBegin@{climateControlBegin}}
+\index{climateControlBegin@{climateControlBegin}!climateControl.h@{climateControl.h}}
+\doxysubsubsection{\texorpdfstring{climateControlBegin()}{climateControlBegin()}}
+{\footnotesize\ttfamily \label{climate_control_8h_a8fb22fdc7cb1d7983b8cbcd8ca7bd6c8} 
+void climate\+Control\+Begin (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Initialize controller timers/\+state. 
+
+Call once in setup(). This does not change any outputs by itself. \Hypertarget{climate_control_8h_a53e733845c73c50290f9cd011ffbd734}\index{climateControl.h@{climateControl.h}!climateControlUpdate@{climateControlUpdate}}
+\index{climateControlUpdate@{climateControlUpdate}!climateControl.h@{climateControl.h}}
+\doxysubsubsection{\texorpdfstring{climateControlUpdate()}{climateControlUpdate()}}
+{\footnotesize\ttfamily \label{climate_control_8h_a53e733845c73c50290f9cd011ffbd734} 
+void climate\+Control\+Update (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_shared_state}{Shared\+State}} \&}]{state}{}\end{DoxyParamCaption})}
+
+
+
+Update climate control (heater + mister) based on sensor readings and targets. 
+
+Inputs (read from {\ttfamily state}):\+
+\begin{DoxyItemize}
+\item state.\+has\+Dht, state.\+tempC, state.\+humidity\+Pct
+\item state.\+target\+TempC, state.\+target\+Humidity\+Pct
+\item state.\+heater\+On, state.\+mister\+On (used for hysteresis decisions)
+\end{DoxyItemize}
+
+Outputs (written to {\ttfamily state} and hardware):\+
+\begin{DoxyItemize}
+\item Heater output via heater\+Set(state, on) (also updates state.\+heater\+On)
+\item Mister output via mister\+State(on) and state.\+mister\+On
+\end{DoxyItemize}
+
+Fail-\/safe:\+
+\begin{DoxyItemize}
+\item If state.\+has\+Dht is false, heater and mister are turned OFF.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & Shared state containing latest sensor values, setpoints, and actuator states. \\
+\hline
+\end{DoxyParams}

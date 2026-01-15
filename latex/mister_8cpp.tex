@@ -1,0 +1,59 @@
+\doxysection{mister.\+cpp File Reference}
+\hypertarget{mister_8cpp}{}\label{mister_8cpp}\index{mister.cpp@{mister.cpp}}
+
+
+Mister output implementation.  
+
+
+{\ttfamily \+\#include "{}mister.\+h"{}}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{mister_8cpp_a4047f38615e404420ed0f155bce10d5e}\label{mister_8cpp_a4047f38615e404420ed0f155bce10d5e} 
+\+\#define {\bfseries MISTERPIN}~D1
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{mister_8cpp_a89f060462deccd1db72698f79b133209}{mister\+Init}} ()
+\begin{DoxyCompactList}\small\item\em Initialize the mister output pin. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{mister_8cpp_adbb59d6d780d7f1a78447a6294747832}{mister\+State}} (bool command)
+\begin{DoxyCompactList}\small\item\em Turn mister output ON/\+\+OFF. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Mister output implementation. 
+
+
+
+\label{doc-func-members}
+\Hypertarget{mister_8cpp_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{mister_8cpp_a89f060462deccd1db72698f79b133209}\index{mister.cpp@{mister.cpp}!misterInit@{misterInit}}
+\index{misterInit@{misterInit}!mister.cpp@{mister.cpp}}
+\doxysubsubsection{\texorpdfstring{misterInit()}{misterInit()}}
+{\footnotesize\ttfamily \label{mister_8cpp_a89f060462deccd1db72698f79b133209} 
+void mister\+Init (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Initialize the mister output pin. 
+
+Intializing the pin to be used by the mister. Change pin in the define MISTERPIN. \Hypertarget{mister_8cpp_adbb59d6d780d7f1a78447a6294747832}\index{mister.cpp@{mister.cpp}!misterState@{misterState}}
+\index{misterState@{misterState}!mister.cpp@{mister.cpp}}
+\doxysubsubsection{\texorpdfstring{misterState()}{misterState()}}
+{\footnotesize\ttfamily \label{mister_8cpp_adbb59d6d780d7f1a78447a6294747832} 
+void mister\+State (\begin{DoxyParamCaption}\item[{bool}]{command}{}\end{DoxyParamCaption})}
+
+
+
+Turn mister output ON/\+\+OFF. 
+
+Turns the mister on or off. Handles unknown states by turning the mister off. ~\newline
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & can be true or false, to turn on or off the mister. \\
+\hline
+\end{DoxyParams}

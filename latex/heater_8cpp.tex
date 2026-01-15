@@ -1,0 +1,53 @@
+\doxysection{heater.\+cpp File Reference}
+\hypertarget{heater_8cpp}{}\label{heater_8cpp}\index{heater.cpp@{heater.cpp}}
+
+
+Heater output implementation.  
+
+
+{\ttfamily \+\#include $<$Arduino.\+h$>$}\newline
+{\ttfamily \+\#include "{}heater.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \doxymbox{\hyperlink{heater_8cpp_a19107e3d0333e85739ea9afa58c13898}{heater\+Begin}} ()
+\begin{DoxyCompactList}\small\item\em Initialize heater output pin(s). \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{heater_8cpp_a267a2ff10930ef02ffb1aff3a3439d47}{heater\+Set}} (\doxymbox{\hyperlink{struct_shared_state}{Shared\+State}} \&state, bool on)
+\begin{DoxyCompactList}\small\item\em Turn heater output ON/\+\+OFF and update \doxylink{struct_shared_state}{Shared\+State}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Heater output implementation. 
+
+
+
+\label{doc-func-members}
+\Hypertarget{heater_8cpp_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{heater_8cpp_a19107e3d0333e85739ea9afa58c13898}\index{heater.cpp@{heater.cpp}!heaterBegin@{heaterBegin}}
+\index{heaterBegin@{heaterBegin}!heater.cpp@{heater.cpp}}
+\doxysubsubsection{\texorpdfstring{heaterBegin()}{heaterBegin()}}
+{\footnotesize\ttfamily \label{heater_8cpp_a19107e3d0333e85739ea9afa58c13898} 
+void heater\+Begin (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Initialize heater output pin(s). 
+
+Call once in setup(). \Hypertarget{heater_8cpp_a267a2ff10930ef02ffb1aff3a3439d47}\index{heater.cpp@{heater.cpp}!heaterSet@{heaterSet}}
+\index{heaterSet@{heaterSet}!heater.cpp@{heater.cpp}}
+\doxysubsubsection{\texorpdfstring{heaterSet()}{heaterSet()}}
+{\footnotesize\ttfamily \label{heater_8cpp_a267a2ff10930ef02ffb1aff3a3439d47} 
+void heater\+Set (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{struct_shared_state}{Shared\+State}} \&}]{state}{, }\item[{bool}]{on}{}\end{DoxyParamCaption})}
+
+
+
+Turn heater output ON/\+\+OFF and update \doxylink{struct_shared_state}{Shared\+State}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & \doxylink{struct_shared_state}{Shared\+State} to update (writes state.\+heater\+On only). \\
+\hline
+{\em on} & True to turn heater on, false to turn it off. \\
+\hline
+\end{DoxyParams}
