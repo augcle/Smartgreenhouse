@@ -1,58 +1,67 @@
 /**
  * @file LightSensor.cpp
  * @brief Light sensor (LDR) logic + lamp + daily light counter.
+ * @details The code main job is to read/sensor how much sun light the plant need for optimal growth, the code uses the photosensor to get data on how sun light the plant get then with at set threshold either turns on or off the lamp for the plant for light
+ * 
+ *  * @section light_vars Internal state variables
+ * 
+ * - LDR_PIN:      ADC pin for the LDR divider (A0)
+ * - LEDPIN:       Output pin for the lamp (D3)
+ * - threshold:    Light threshold to turn on LED/Lamp
+ * - TARGET_HOURS: Daily target light hours
+ * - lastMs:       Last update timestamp 
+ * - dayStartMs:   Start of day timestamp 
+ * - hoursToday:   Accumulated effective light hours today
  */
 
 #include "LightSensor.h"
 
-// Hardware pins (matches your working test setup)
-// LDR voltage divider output is connected to A0 (ESP ADC: 0..1023)
-static const uint8_t LDR_PIN = A0;
+static const uint8_t LDR_PIN = A0; 
 
-// Plant lamp indicator LED pin (NodeMCU/Wemos style pin name)
-static const uint8_t LEDPIN  = D3;
+static const uint8_t LEDPIN  = D3; 
 
-// --- Calibration constants ---
-// Threshold used to decide "dark" vs "bright".
-// If raw < threshold => dark. Adjust based on your measured raw values.
-static int threshold = 950;
+static int threshold = 950; 
 
-// Daily target light amount for the plant (in hours).
-// When the plant has received this many hours today, we stop turning on the lamp.
-static const float TARGET_HOURS = 6.0f;
+static const float TARGET_HOURS = 6.0f; 
 
-// --- Internal runtime variables (kept inside this module) ---
-// Used to compute delta time between updates (non-blocking timing via millis()).
-static unsigned long lastMs = 0;
+static unsigned long lastMs = 0; 
 
-// Used to reset the daily counter every 24 hours.
-static unsigned long dayStartMs = 0;
+static unsigned long dayStartMs = 0; 
+static float hoursToday = 0.0f; 
 
-// Accumulated light time received today (hours).
-static float hoursToday = 0.0f;
+/**
+ * @brief Clamp a floating-point value to a closed interval.
+ *
+ * @details Returns:
+ * - lo if x < lo
+ * - hi if x > hi
+ * - x otherwise
+ *
+ * @param x  Input value.
+ * @param lo Lower bound (inclusive).
+ * @param hi Upper bound (inclusive).
+ * @return Clamped value in the range [lo, hi].
+ */
 
-// Clamp helper to keep values within a safe range.
 static float clampf(float x, float lo, float hi) {
   if (x < lo) return lo;
   if (x > hi) return hi;
   return x;
 }
 
-// Resets the daily counter once every 24 hours.
-// This is a simple "rolling 24h window from boot" approach.
-static void resetDayIfNeeded(unsigned long now) {
-  const unsigned long DAY_MS = 24UL * 60UL * 60UL * 1000UL; // 24 hours in ms
-
-  // If more than 24h has passed since last "day start", start a new day
-  if ((unsigned long)(now - dayStartMs) >= DAY_MS) {
-    dayStartMs = now;
-    hoursToday = 0.0f;
-  }
-}
-
-// Initializes the light module:
-// - sets LED pin as output and turns it off
-// - initializes timing variables
+/**
+ * @brief Initialize the light module (lamp output + daily tracking timer).
+ *
+ * @details
+ * Configures the lamp output pin and resets the internal timing state used to
+ * accumulate "effective light" hours for the current day.
+ *
+ * - Sets LEDPIN as OUTPUT and turns the lamp OFF.
+ * - Initializes timing variables (lastMs, dayStartMs) to millis().
+ * - Resets hoursToday to 0.0.
+ *
+ * @note Call this once from setup() before calling lightUpdate().
+ */
 void lightInit() {
   pinMode(LEDPIN, OUTPUT);
   digitalWrite(LEDPIN, LOW);
@@ -63,51 +72,39 @@ void lightInit() {
   hoursToday = 0.0f;
 }
 
-// Main update function (call repeatedly from loop()):
-// - reads the LDR analog value
-// - decides whether it is dark
-// - turns lamp LED on/off depending on darkness and remaining target hours
-// - accumulates how many hours of light the plant has received today
-// - writes only 1 float + 1 bool to SharedState:
-//     state.light  = hoursToday
-//     state.lampOn = lamp LED status
+/**
+ * @brief Initialize the LED sturn on and off method, and the intialize the clock tracking time
+ * 
+ * @details 
+ * the method for turning on the lamp, has 2 requirments:
+ * - First requirment is the raw data from dht is has to be lower than threshold, which means if the light is lower than the threshold you want than the first requirment is met.
+ * - Second requirment is before turning on the lamp, the code checks if how long the plants has gotten light today, if the hours required isn't reached first then the lamp turns on.
+ * 
+ * @param state Sharedstate to update and communicate with overall main code
+ */
 void lightUpdate(SharedState &state) {
   unsigned long now = millis();
 
-  // Reset daily light counter if a new day started
   resetDayIfNeeded(now);
 
-  // Compute elapsed time since last update (ms)
   unsigned long dtMs = (unsigned long)(now - lastMs);
   lastMs = now;
 
-  // Read raw light value from ADC (0..1023)
   int raw = analogRead(LDR_PIN);
 
-  // Determine if it is dark based on threshold
   bool dark = (raw < threshold);
 
-  // Lamp should only turn on if:
-  // 1) It's dark, AND
-  // 2) The plant has not yet reached the daily light target
   bool shouldLampOn = dark && (hoursToday < TARGET_HOURS);
 
-  // Apply lamp state to physical LED
   digitalWrite(LEDPIN, shouldLampOn ? HIGH : LOW);
 
-  // Count "effective light time":
-  // The plant receives light if:
-  // - ambient is bright (!dark), OR
-  // - our lamp is on (shouldLampOn)
   bool effectiveLight = (!dark) || shouldLampOn;
 
-  // If the plant is receiving light, accumulate time into hoursToday
-  // dtMs -> seconds -> hours
   if (effectiveLight && dtMs > 0) {
     hoursToday += (dtMs / 1000.0f) / 3600.0f;
     hoursToday = clampf(hoursToday, 0.0f, 24.0f);
   }
 
-  state.lightHoursToday = hoursToday;       // "hours of light received today"
-  state.lampOn = shouldLampOn;     // lamp LED ON/OFF
+  state.lightHoursToday = hoursToday;       
+  state.lampOn = shouldLampOn;     
 }
