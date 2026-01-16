@@ -32,7 +32,7 @@ void setup() {
   climateControlBegin();
 
   // Setting temperature targets
-  state.targetTempC = 27.0;
+  state.targetTempC = 22.0;
   state.targetHumidityPct = 55.0;
 }
 
@@ -49,6 +49,8 @@ void loop() {
     Serial.print("tempC="); Serial.print(state.tempC, 1);
     Serial.print(" hum="); Serial.print(state.humidityPct, 1);
     Serial.print(" heaterOn="); Serial.print(state.heaterOn ? "true" : "false");
-    Serial.print(" misterOn="); Serial.println(state.misterOn ? "true" : "false");
+    Serial.print(" misterOn="); Serial.print(state.misterOn ? "true" : "false");
+    Serial.print(" lampOn="); Serial.print(state.lampOn ? "true" : "false");
+    Serial.print(" lightHoursToday="); Serial.println(state.lightHoursToday);
   }
 }

@@ -1,31 +1,17 @@
-/**
- * @file climateControl.cpp
- * @brief Climate controller implementation (heater + mister).
- */
 #include <Arduino.h>
 #include "climateControl.h"
 #include "heater.h"
 #include "mister.h"
 
-
-/** @brief Temperature hysteresis band in °C. */
 static const float TEMP_HYST = 0.5;
-/** @brief Humidity hysteresis band in %RH. */
 static const float HUM_HYST = 3.0;
 
 // Mister safety measures
-/** @brief Maximum continuous ON time for mister (ms). */
 static const uint32_t MIST_MAX_ON_MS = 20 * 1000; // max continous on
-/** @brief Minimum OFF time before mister is allowed to turn ON again (ms). */
 static const uint32_t MIST_MIN_OFF_MS = 10 * 1000; // minimum backoff interval
-/**
- * @brief Timestamp when mister last transitioned to ON (0 = unknown / not currently timing ON).
- */
+
 // interval timer
 static uint32_t mistOnSinceMs = 0;
-/**
- * @brief Timestamp when mister last transitioned to OFF (0 = unknown / not currently timing OFF).
- */
 static uint32_t mistOffSinceMs = 0;
 
 void climateControlBegin() {

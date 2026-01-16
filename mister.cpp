@@ -6,6 +6,7 @@
 #include "mister.h"
 
 #define MISTERPIN D1
+static const bool MISTER_ACTIVE_LOW = true;
 
 /**
  * Intializing the pin to be used by the mister.
@@ -13,24 +14,23 @@
  */
 void misterInit() {
     pinMode(MISTERPIN, OUTPUT);
+
+    // Ensure mister starts off
+    digitalWrite(MISTERPIN, MISTER_ACTIVE_LOW ? HIGH : LOW);
 }
 
 /**
  * Turns the mister on or off. Handles unknown states by turning the mister off.  
  * 
- * @param command can be true or false, to turn on or off the mister.
+ * @param on can be true or false, to turn on or off the mister. It is inverted.
  */
-void misterState(bool command) {
-    switch (command)
-    {
-    case true:
-        digitalWrite(MISTERPIN, HIGH);
-        break;
-    case false:
-        digitalWrite(MISTERPIN, LOW);
-        break;
-    default:
-        digitalWrite(MISTERPIN, LOW);
-        break;
-    }
+
+void misterState(bool on) {
+  if (MISTER_ACTIVE_LOW) {
+    digitalWrite(MISTERPIN, on ? LOW : HIGH);   // inverted
+  } else {
+    digitalWrite(MISTERPIN, on ? HIGH : LOW);  // normal
+  }
+
+
 }
