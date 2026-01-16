@@ -3,10 +3,17 @@
 #include "heater.h"
 #include "mister.h"
 
+/**
+ * @file climateControl.cpp
+ * @brief Climate controller: applies control logic (heater + mister) from SharedState sensor values/targets.
+ * 
+ */
+
+
+//Allowed temperature hysteriria
 static const float TEMP_HYST = 0.5;
 static const float HUM_HYST = 3.0;
 
-// Mister safety measures
 static const uint32_t MIST_MAX_ON_MS = 20 * 1000; // max continous on
 static const uint32_t MIST_MIN_OFF_MS = 10 * 1000; // minimum backoff interval
 

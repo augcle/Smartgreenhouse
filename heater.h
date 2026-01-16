@@ -3,7 +3,9 @@
 
 /**
  * @file heater.h
- * @brief Heater output module (LED / relay abstraction).
+ * @brief Heater output module
+ * 
+ * The heater is not actually a heater. It is an LED that represents the heating element. 
  */
 
 /**

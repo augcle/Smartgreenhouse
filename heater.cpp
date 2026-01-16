@@ -1,12 +1,13 @@
 /**
  * @file heater.cpp
- * @brief Heater output implementation.
+ * @brief Initializes and toggles the heater
+ * 
+ * The heater is not actually a heater. It is an LED that represents the heating element. 
  */
 #include <Arduino.h>
 #include "heater.h"
 
-/// Output pin used as heater indicator/output (NodeMCU/Wemos pin name)
-static const uint8_t HEATER_LED_PIN = D2;
+static const uint8_t HEATER_LED_PIN = D2;  
 
 void heaterBegin() {
   pinMode(HEATER_LED_PIN, OUTPUT);
