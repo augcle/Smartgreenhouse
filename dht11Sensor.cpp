@@ -15,10 +15,28 @@
 /// Internal DHT driver instance (module-owned)
 static DHT dht(DHTPIN, DHTTYPE);
 
+/**
+ * @brief Initialize the DHT11 hardware/library.
+ *
+ * Call once in setup().
+ */
 void dht11Begin() {
   dht.begin();
 }
 
+/**
+ * @brief Read temperature + humidity and write results into SharedState.
+ *
+ * On success:
+ *  - state.tempC, state.humidityPct updated
+ *  - state.hasDht = true
+ *
+ * On failure:
+ *  - tempC/humidityPct set to NAN
+ *  - state.hasDht = false
+ *
+ * @param state SharedState to update.
+ */
 void dht11Read(SharedState &state) {
   float h = dht.readHumidity();
   float t = dht.readTemperature();
