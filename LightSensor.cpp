@@ -85,7 +85,7 @@ void lightInit() {
 void lightUpdate(SharedState &state) {
   unsigned long now = millis();
 
-  resetDayIfNeeded(now);
+ // resetDayIfNeeded(now);  //  is not declared in this scope
 
   unsigned long dtMs = (unsigned long)(now - lastMs);
   lastMs = now;

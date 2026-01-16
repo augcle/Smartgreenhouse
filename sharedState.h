@@ -1,24 +1,28 @@
-/**
- * @file sharedState.h
- */
-
 #pragma once
 #include <Arduino.h>
 
-
-/// @brief Shared runtime state for the greenhouse.
-/// @details Holds latest sensor readings, actuator states, and target setpoints.        
+/**
+ * @file sharedState.h
+ * @brief Shared state container for sensors + actuators.
+ *
+ * Modules write/read to/from this struct to coordinate behavior.
+ */
 struct SharedState {
-  float tempC;              ///< Latest temperature in °C.
-  float humidityPct;        ///< Latest humidity in %.
-  bool  hasDht;             ///< True if the last DHT read was valid.
+  // --- DHT11: Temperature and humidity ---
+  float tempC = NAN;          ///< Latest temperature in °C (NAN if invalid)
+  float humidityPct = NAN;    ///< Latest humidity in % (NAN if invalid)
+  bool  hasDht = false;       ///< True if last DHT read succeeded
 
-  float lightHoursToday;    ///< Accumulated light hours today (Clock).
-  bool  lampOn;             ///< True if the lamp is currently ON.
+  // --- Light module ---
+  float lightHoursToday = NAN; ///< Accumulated hours of effective light today
+  bool  lampOn = false;        ///< True when lamp LED output is ON
 
-  bool  heaterOn;           ///< True if the heater output is ON.
-  bool  misterOn;           ///< True if the mister output is ON.
+  // --- Actuator states ---
+  bool heaterOn = false;      ///< True when heater output is ON
+  bool misterOn = false;      ///< True when mister output is ON
 
-  float targetTempC;        ///< Desired temperature setpoint (°C).
-  float targetHumidityPct;  ///< Desired humidity setpoint (%).
+  // --- Targets (set by main / controller) ---
+  float targetTempC = 27.0f;        ///< Desired temperature (°C)
+  float targetHumidityPct = 65.0f;  ///< Desired humidity (%)
+  float targetLightHoursToday = 6.0f;      ///< Desired light hours per day
 };
