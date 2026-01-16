@@ -2,6 +2,7 @@
  * @file mister.cpp
  * @brief Initalises and controls the mister
  * 
+ * The
  */
 
 #include "mister.h"
@@ -10,8 +11,9 @@
 static const bool MISTER_ACTIVE_LOW = true;
 
 /**
- * Intializing the pin to be used by the mister.
- * Change pin in the MISTERPIN definition.
+ * @brief Initialize the mister output pin.
+ *
+ * Call once in setup().
  */
 void misterInit() {
     pinMode(MISTERPIN, OUTPUT);
