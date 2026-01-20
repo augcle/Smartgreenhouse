@@ -14,8 +14,11 @@ struct SharedState {
   bool  hasDht = false;       ///< True if last DHT read succeeded
 
   // --- Light module ---
-  float lightHoursToday = NAN; ///< Accumulated hours of effective light today
+  float lightHoursToday = 0.0f; ///< Accumulated hours of effective light today
   bool  lampOn = false;        ///< True when lamp LED output is ON
+
+  uint32_t dayStartMs = 0;
+  uint32_t dayLengthMs = 24UL * 60UL * 60UL * 1000UL;
 
   // --- Actuator states ---
   bool heaterOn = false;      ///< True when heater output is ON

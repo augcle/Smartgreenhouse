@@ -28,9 +28,9 @@ void misterInit() {
 
 void misterState(bool on) {
   if (MISTER_ACTIVE_LOW) {
-    digitalWrite(MISTERPIN, on ? LOW : HIGH);   
+    digitalWrite(MISTERPIN, on ? HIGH : LOW);   
   } else {
-    digitalWrite(MISTERPIN, on ? HIGH : LOW);  
+    digitalWrite(MISTERPIN, on ? LOW : HIGH);  
   }
 
 
