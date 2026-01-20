@@ -1,0 +1,43 @@
+* 2877f82 2026-01-16 HyberDuck  (HEAD -> main, origin/main, origin/HEAD) credentials.h add
+* eb10489 2026-01-16 HyberDuck  Describe your changes here
+* 938b705 2026-01-16 HyberDuck  Describe your changes here
+* 01ee2c6 2026-01-16 augcle  Updated extensions and compiled new pdf
+* ba967b1 2026-01-16 Munk-V  Added doxygen comments
+* c04a704 2026-01-16 augcle  Updated doxyfile to include ino extensions
+*   e0245fd 2026-01-16 augcle  Merge branch 'Comments'
+|\  
+| * 3a0642a 2026-01-16 augcle  (origin/Comments) Updated to only display cpp files
+| * 59dc824 2026-01-16 augcle  Updated readme
+| * 460ec40 2026-01-16 augcle  Added some comments for these files
+* | 01e8cd6 2026-01-16 Munk-V  Doxygen Comments
+|/  
+* 774a83e 2026-01-16 augcle  Uploaded first-draft PDF file
+* 288c20f 2026-01-16 Boy-el-Geck  Hardware/software integration
+* d7bdd02 2026-01-15 Munk-V  Made the Html and Latex files for project
+* bba5e02 2026-01-15 Munk-V  Added Doxygenfile and Comments to all files
+* e6f6b74 2026-01-15 Boy-el-Geck  Added climate control logic with threshholds (hysteresis) and moved lightsensor control
+* a17fe19 2026-01-14 Munk-V  Changed Pin mapping since they were overlapping
+* abb6bbf 2026-01-14 Munk-V  Trying to fix problems
+* 8b6371f 2026-01-14 Munk-V  Added all sensors to main
+* 2c7c301 2026-01-14 Munk-V  Fiksed 1 line
+* cd539f3 2026-01-14 Munk-V  Added all sensors to sharedState
+* b3e8b37 2026-01-14 Munk-V  Added Hardware build for dht11 + heater
+* f21c38c 2026-01-14 Munk-V  Added Heater module
+* 77fd592 2026-01-14 Munk-V  Added Light module to main
+* cc214b1 2026-01-14 Munk-V  Fiks
+* a4619dd 2026-01-14 Munk-V  Added comments to LightSensor
+* f1d3fb6 2026-01-14 Munk-V  Added Fritzing of LightSensor
+* 35e825c 2026-01-14 Munk-V  Added main code for LightSensor
+* 8467935 2026-01-14 Munk-V  Added sharedstate fil for Lightsensor
+* 9a57a44 2026-01-14 Munk-V  Added Light int correctly
+*   a7960ce 2026-01-14 Boy-el-Geck  Merge branch 'main' of github.com:augcle/Smartgreenhouse
+|\  
+| * 8742d7e 2026-01-14 augcle  (origin/mister) Updated code to properly initalize the pins used. Tested mister.cpp to work with an LED, with call from main.
+| * 51bd631 2026-01-14 augcle  Initial code outline
+* | d75775e 2026-01-14 Boy-el-Geck  Working DHT11 module + state handling
+|/  
+* f1b36cb 2026-01-14 Boy-el-Geck  Initial working baseline: shared state + DHT11 module
+* c0531f2 2026-01-14 Boy-el-Geck  main update
+* 86990a7 2026-01-14 Boy-el-Geck  Add sharedState
+* 502d8a0 2026-01-13 Boy-el-Geck  Add initial Arduino sketch
+* dda4687 2026-01-13 August Clemmensen  Add note about project purpose
