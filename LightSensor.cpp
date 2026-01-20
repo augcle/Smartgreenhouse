@@ -1,35 +1,74 @@
+/**
+ * @file LightSensor.cpp
+ * @brief LDR-based light sensing, lamp control and light accumulation.
+ * 
+ * @details This module reads an LDR on an analog pin and decides whether the environment
+ * is dark, using a threshold set by an administrator. It also controls a lamp and tracks
+ * how many hours of light is in the greenhouse during a day.
+ * 
+ * "Hours of light" means that there is enough ambient light or the lamp is turned on.
+ * 
+ * The daily counter is reset once per day. A day is defined from the time the device is turned
+ * on, not actual sunrise.
+ * 
+ * The lamp is controlled by a strategy where the system compares the accumulated hours of light
+ * against a schedule of expected hours of light during a day. It turns on the lamp when
+ * the system is behind schedule.
+*/
+
 #include "Lightsensor.h"
 #include <Arduino.h>
 #include <math.h>
 
-// Hardware pins
+/**
+ * @name Hardware pins
+*/
 static const uint8_t LDR_PIN = A0;
 static const uint8_t LEDPIN  = D5;
 
-// Calibration (tune these)
-static int DARK_THRESHOLD = 1000;   // raw ADC threshold for "dark"
+/**
+ * @brief Raw ADC threshold for the definition of darkness. 
+ *
+ * If the analog read function returns a value lower than this,
+ * the ambient light is deemed too low.
+*/
+static int DARK_THRESHOLD = 1000;
 
-// Update cadence inside lightUpdate (so you can call it often)
-static const uint32_t SAMPLE_MS = 1000; // sample each 1s (cheap)
+/**
+ *@brief Minimum time between light samples in milliseconds as to 
+ * save on resources.
+*/
+static const uint32_t SAMPLE_MS = 1000;
 
-// Internal state
+/// Internal state
 static uint32_t lastSampleMs = 0;
 static uint32_t dayStartMs   = 0;
 static float hoursToday      = 0.0f;
 
-// Choose policy
-enum LightPolicy {
-  POLICY_DEADLINE = 0,   // your idea: wait until "must"
-  POLICY_PACED    = 1    // recommended: keep pace through day
-};
-static const LightPolicy POLICY = POLICY_PACED;
-
-// Helpers
-static float clampf(float x, float lo, float hi) {
+/**
+ * @brief Clamp a floating-point value to a given range.
+ *
+ * @param x  Value to clamp.
+ * @param lo Lower bound.
+ * @param hi Upper bound.
+ * @return Clamped value in the range [lo, hi].
+ */
+static float clamp(float x, float lo, float hi) {
   if (x < lo) return lo;
   if (x > hi) return hi;
   return x;
 }
+
+/**
+ * @brief Reset daily light accumulation.
+ *
+ * @details
+ * Resets the internal light-hour counter and marks the beginning
+ * of a new day. The shared state is updated accordingly.
+ *
+ * @param now   Current timestamp start of system
+ * @param state Shared state
+ */
 
 static void resetDay(uint32_t now, SharedState &state) {
   dayStartMs = now;
@@ -37,6 +76,15 @@ static void resetDay(uint32_t now, SharedState &state) {
   state.lightHoursToday = 0.0f;
 }
 
+
+/**
+ * @brief Start light sensor and lamp.
+ * 
+ * @details Configures lamp and sensor pin
+ * and starts internal timer.
+ *
+ * Call this function in setup() before lightUpdate().
+*/
 void lightInit() {
   pinMode(LEDPIN, OUTPUT);
   digitalWrite(LEDPIN, LOW);
@@ -47,67 +95,59 @@ void lightInit() {
   hoursToday = 0.0f;
 }
 
+/**
+ * @brief Update lamp state and accumulate hours of light.
+ * 
+ * @details 
+ * This function starts by resetting the daily counter every 24 hours. Samples fron the analog pin
+ * every (default) 1 seconds. It determines if the light is sufficient and turns on the
+ * light if the greenhouse is behind schedule. It counts how many hours of light there has been.
+ * 
+ * @param state Shared state structure:
+ *  - Reads:  `state.targetLightHoursToday`
+ *  - Writes: `state.lampOn`, `state.lightHoursToday`
+*/
 void lightUpdate(SharedState &state) {
   uint32_t now = millis();
 
-  // Day length: use state if you add it, otherwise 24h default here
   const uint32_t dayLenMs = 24UL * 60UL * 60UL * 1000UL;
 
-  // Reset day if needed
   if ((uint32_t)(now - dayStartMs) >= dayLenMs) {
     resetDay(now, state);
   }
 
-  // Throttle sampling so calling lightUpdate() often is safe
-  if ((uint32_t)(now - lastSampleMs) < SAMPLE_MS) {
-    // still mirror state out
+  if ((uint32_t)(now - lastSampleMs) < SAMPLE_MS) { /// To avoid reading from the analog pin too much. It is very slow and might throttle program.
     state.lightHoursToday = hoursToday;
     return;
   }
 
-  uint32_t dtMs = now - lastSampleMs;
+  uint32_t elapsedSampleMs = now - lastSampleMs;
   lastSampleMs = now;
 
   int raw = analogRead(LDR_PIN);
   bool ambientDark = (raw < DARK_THRESHOLD);
 
-  // Determine whether we should turn lamp on
-  const float targetHrs = clampf(state.targetLightHoursToday, 0.0f, 24.0f);
-  const float elapsedHrs = (now - dayStartMs) / 3600000.0f;
-  const float dayLenHrs  = dayLenMs / 3600000.0f;
-  const float remainingHrs = clampf(dayLenHrs - elapsedHrs, 0.0f, dayLenHrs);
+  const float targetHrs  = clamp(state.targetLightHoursToday, 0.0, 24.0); /// Get the target 
+  const float elapsedHrs = (now - dayStartMs) / 3600000.0; /// How many hours into the current day are we?
+  const float dayLenHrs  = dayLenMs / 3600000.0; /// Day lenght in hours
 
-  bool wantLamp = false;
+  bool lampOn = false; /// Turn it off by default, unless it is turned on
 
-  if (targetHrs <= 0.0f) {
-    wantLamp = false;
-  } else if (hoursToday >= targetHrs) {
-    wantLamp = false;
-  } else {
-    if (POLICY == POLICY_DEADLINE) {
-      // Your idea: wait until remaining time equals time needed
-      float neededHrs = targetHrs - hoursToday;
-      wantLamp = (remainingHrs <= neededHrs);
-    } else {
-      // Paced: by now, you "should" have earned this many hours
-      float expectedSoFar = targetHrs * (elapsedHrs / dayLenHrs);
-      // If you're behind, supplement now
-      wantLamp = (hoursToday + 0.001f < expectedSoFar);
-    }
+  if (targetHrs > 0.0f && hoursToday < targetHrs) {
+    float expectedSoFar = targetHrs * (elapsedHrs / dayLenHrs); /// Figuring out how many hours we should've had by now
+    bool behindSchedule = (hoursToday + 0.001f < expectedSoFar);
+    lampOn = behindSchedule && ambientDark;
   }
-
-  // Final: lamp only helps if ambient is dark (no reason to add lamp in bright light)
-  bool lampOn = wantLamp && ambientDark;
 
   digitalWrite(LEDPIN, lampOn ? HIGH : LOW);
   state.lampOn = lampOn;
 
-  // Effective light is: sun (not dark) OR lamp
   bool effectiveLight = (!ambientDark) || lampOn;
-  if (effectiveLight && dtMs > 0) {
-    hoursToday += (dtMs / 1000.0f) / 3600.0f;
-    hoursToday = clampf(hoursToday, 0.0f, 24.0f);
+  if (effectiveLight && elapsedSampleMs > 0) {
+    hoursToday += (elapsedSampleMs / 1000.0f) / 3600.0f;
+    hoursToday = clamp(hoursToday, 0.0f, 24.0f);
   }
 
   state.lightHoursToday = hoursToday;
 }
+

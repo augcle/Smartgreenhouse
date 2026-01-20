@@ -82,33 +82,6 @@ void notifyClients2(String sensorReadings) {
   ws.textAll(sensorReadings);
 }
 
-
-/*
-void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
-  AwsFrameInfo *info = (AwsFrameInfo*)arg;
-  if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
-    data[len] = 0;
-    message = (char*)data;
-    
-    if (message.startsWith("T:")) { 
-      state.targetTempC = message.substring(2).toFloat(); //tempSet
-    }
-    if (message.startsWith("H:")) {
-      state.targetHumidityPct = message.substring(2).toFloat();
-    }
-    
-    if (message.startsWith("L:")) {
-      state.targetLightHoursToday = message.substring(2).toFloat();
-    }
-  
-    if (strcmp((char*)data, "getReadings") == 0) {
-      notifyClients2(getSensorReadings());
-    }
-    
-  }
-}
-*/
-
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
   AwsFrameInfo *info = (AwsFrameInfo*)arg;
   if (!(info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT)) return;
@@ -200,13 +173,6 @@ void setup() {
 
 void loop() {
   dht11Read(state);
-
-  /* static uint32_t lastLightUpdate = 0;
-  if (millis() - lastLightUpdate >= LIGHT_UPDATE) {
-    lastLightUpdate = millis();   // <-- missing line
-    lightUpdate(state);
-  }*/
-
   lightUpdate(state);
 
   yield();
@@ -262,5 +228,4 @@ if (millis() - lastPostTime > postDelay) {
 }
 
   ws.cleanupClients();
-  // ****************** Server end****************************
 }
