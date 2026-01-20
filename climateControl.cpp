@@ -30,7 +30,7 @@ static uint32_t mistOffSinceMs = 0;
 /**
  * @brief Initialize controller timers/state.
  *
- * Call once in setup(). This does not change any outputs by itself.
+   * Call once in setup(). This does not change any outputs by itself.
  */
 void climateControlBegin() {
   mistOnSinceMs = 0;
