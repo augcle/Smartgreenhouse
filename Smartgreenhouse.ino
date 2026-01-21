@@ -26,7 +26,9 @@
 #include "webFiles.h"
 
 // ****************** Server end ****************************
-
+/**
+ * @brief Shared system state containing sensor readings and targets.
+ */
 SharedState state;
 
 static const uint32_t PRINT_MS = 1000;
@@ -53,7 +55,15 @@ JSONVar readings; // Json Variable to Hold Sensor Readings
 unsigned long lastTime = 0;  
 unsigned long timerDelay = 1000;
 
-// Get Sensor Readings and return JSON object
+/**
+ * @brief Collect current sensor readings and targets.
+ *
+ * @details
+ * return a JSON object with measured values and configured targets
+ * from the shared system state.
+ *
+ * @return JSON string containing sensor data and targets.
+ */
 String getSensorReadings() {
   readings["temperature"] = round(state.tempC); // actual measured temp
   readings["humidity"] = round(state.humidityPct); // actual measured humidity
@@ -82,6 +92,17 @@ void notifyClients2(String sensorReadings) {
   ws.textAll(sensorReadings);
 }
 
+/**
+ * @brief Handle incoming WebSocket messages.
+ *
+ * @details
+ * control commands received from the web client and updates
+ * target values in the shared state. Also responds to data requests.
+ *
+ * @param arg WebSocket frame information
+ * @param data Incoming message buffer
+ * @param len Length of the message
+ */
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
   AwsFrameInfo *info = (AwsFrameInfo*)arg;
   if (!(info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT)) return;
@@ -106,8 +127,16 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
   else if (msg.startsWith("L:")) state.targetLightHoursToday = msg.substring(2).toFloat();
 }
 
-
-
+/**
+ * @brief Handle WebSocket connection events.
+ *
+ * @param server WebSocket server instance
+ * @param client Connected client
+ * @param type Event type
+ * @param arg Event-specific data
+ * @param data Payload data
+ * @param len Payload length
+ */
 void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len) {
   switch (type) {
     case WS_EVT_CONNECT:
@@ -131,7 +160,13 @@ void initWebSocket() {
 }
 
 // ****************** Server end ****************************
-
+/**
+ * @brief Arduino setup function.
+ *
+ * @details
+ * Initializes sensors, actuators, control logic, WiFi,
+ * web server, and cloud services.
+ */
 void setup() {
   Serial.begin(115200);
   delay(200);
@@ -171,6 +206,13 @@ void setup() {
   // ****************** Server end ****************************
 }
 
+/**
+ * @brief Main application loop.
+ *
+ * @details
+ * Periodically updates the climate controller, sends sensor data
+ * to connected clients, and publishes data to ThingSpeak.
+ */
 void loop() {
   dht11Read(state);
   lightUpdate(state);
