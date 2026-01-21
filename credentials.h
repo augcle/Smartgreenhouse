@@ -4,8 +4,8 @@
 #ifndef CREDENTIALS_H
 #define CREDENTIALS_H
 
-const char* ssid = "IoTest";
-const char* password = "T3rmAccess";
+const char* ssid = "Jons Hjemmebag";
+const char* password = "ny19981864pass";
 
 const unsigned long channelID = 3226727;
 const char* APIKey = "XK6TU8O6YMM4ARXJ";
