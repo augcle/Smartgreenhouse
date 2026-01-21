@@ -69,8 +69,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
             </div>
             <div class="card">
                 <p class="card-title"> Light ☀️</p>
-                <p class="reading"><span id="light"></span> %</p>
-                <div id="light-indicator" class="light_visual-indicator"></div>
+                <p class="reading"><span id="light"></span></p>
             </div>
             <div class="card">
                 <p class="card-title"><i class="fas fa-thermometer-threequarters" style="color:#059e8a;"></i>
@@ -194,7 +193,9 @@ body {
     font-size: 2.4rem;
     font-weight: 700;
     color: #1b5e20;
+    text-align: center;
 }
+
 
 /* ===== CONTROL PANEL ===== */
 .switch {
@@ -235,16 +236,6 @@ body {
     background: linear-gradient(
         to right,
         rgba(255, 99, 132, 1) var(--indicator-width, 0%),
-        #e0e0e0 var(--indicator-width, 0%) 100%
-    );
-}
-.light_visual-indicator {
-    height: 10px;
-    margin-top: 16px;
-    border-radius: 10px;
-    background: linear-gradient(
-        to right,
-        #ffb300 var(--indicator-width, 0%),
         #e0e0e0 var(--indicator-width, 0%) 100%
     );
 }
@@ -370,13 +361,16 @@ function onMessage(event) {
         var key = keys[i];
         document.getElementById(key).innerHTML = myObj[key];
         if (key === "temperature") {
-            updateIndicator("temp-indicator", myObj[key], 10, 30); // 10-30°C range
+            updateIndicator("temp-indicator", myObj[key], 10, 35); // 0-50°C range
         }
          if (key === "humidity") {
             updateIndicator("hum-indicator", myObj[key], 0, 100); // range
         }
          if (key === "light") {
-            updateIndicator("light-indicator", myObj[key], 0, 100); // range
+          document.getElementById("light").innerHTML =
+                myObj[key] ? "On" : "Off";
+        } else {
+            document.getElementById(key).innerHTML = myObj[key];
         }
     }
 }
